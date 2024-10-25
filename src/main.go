@@ -98,21 +98,6 @@ func OpenBracketsIndexes(source string) (result []int, err error) {
 	return result, errors.New("there is no open brackets in string")
 }
 
-// Слайс из индексов закрывающих скобок
-func CloseBracketsIndexes(source string) (result []int, err error) {
-	for index, el := range source {
-		if el == ')' {
-			result = append(result, index)
-		}
-	}
-	if len(result) != 0 {
-		return result, nil
-	}
-
-	return result, errors.New("there is no close brackets in string")
-
-}
-
 // Кол-во элементов в срезе меньше указаного
 func MinLength(element, start int, open []int) int {
 	count := 0
@@ -171,9 +156,7 @@ func IsSubstringHaveBrackets(source string, pair []int) bool {
 }
 
 // Список скобок без внутрених скобок
-func OnlySimpleBreakets(source string, array [][]int) [][]int {
-	result := make([][]int, 0)
-
+func OnlySimpleBreakets(source string, array [][]int) (result [][]int) {
 	for _, pair := range array {
 		if IsSubstringHaveBrackets(source, pair) {
 			if !IsPairInArray(pair, result) {
@@ -188,7 +171,7 @@ func OnlySimpleBreakets(source string, array [][]int) [][]int {
 // Операция над двумя числами
 func Operation(array []float64, operation rune) (float64, error) {
 	if len(array) < 2 {
-		return 0, errors.New("wrong!")
+		return 0, errors.New("can't do operation. there is no numbers")
 	}
 
 	number1 := array[len(array)-2]
@@ -272,7 +255,7 @@ func CalculateExpression(source string) (float64, error) {
 
 		} else if IsSymbolInString(symbol, signs) {
 			if len(numbers) < 1 {
-				return numbers[0], errors.New("wrong format")
+				return 0, errors.New("can't do operation without numbers")
 
 				// Если первый знак - просто добавляем
 			} else if len(operations) == 0 {
@@ -384,7 +367,7 @@ func Calc(source string) (float64, error) {
 
 func main() {
 	//s := "((1 + 2) * 3) / ((6 * 3) - ((2 * 3) + 9 + 2))"
-	s := "5.5 - 3.3"
+	s := "+5.5 - 3.3"
 	//s := "(1 + 3 + 5) * 2.5 - 12"
 
 	fmt.Print(Calc(s))
